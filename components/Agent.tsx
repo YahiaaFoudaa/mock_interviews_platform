@@ -30,10 +30,10 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
         const onCallEnd = () => setCallStatus(CallStatus.FINISHED);
         const onMessage = (message: Message) => {
             if(message.type === 'transcript' && message.transcriptType === 'final') {
-                const newMessage = { role: message.role, content: message.transcript}
+                const newMessage = { role: message.role, content: message.transcript};
                 setMessages((prev) => [...prev, newMessage]);
             }
-        }
+        };
 
         const onSpeechStart = () => setIsSpeaking(true);
         const onSpeechEnd = () => setIsSpeaking(false);
