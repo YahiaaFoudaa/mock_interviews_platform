@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
@@ -15,7 +15,7 @@ enum CallStatus {
 
 interface SavedMessage {
     role: 'user' | 'system' | 'assistant';
-    content: 'string';
+    content: string;
 }
 
 
