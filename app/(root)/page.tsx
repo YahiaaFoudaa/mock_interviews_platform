@@ -2,20 +2,19 @@ import React from 'react'
 import {Button} from '@/components/ui/button'
 import Link from 'next/link'
 import Image from 'next/image'
-import { dummyInterviews } from '@/constants'
 import InterviewCard from '@/components/InterviewCard'
-import { getInterviewByUserId, getCurrentUser, getLatestInterviews } from '@/lib/actions/auth.action'
+import { getInterviewsByUserId, getCurrentUser, getLatestInterviews } from '@/lib/actions/auth.action'
 
 const Page = async () => {
     const user = await getCurrentUser();
 
-    const [latestInterviews, userInterviews] = await Promise.all([
-        getLatestInterviews({ userId: user?.id! }),
-        getInterviewByUserId(user?.id!)
+    const [userInterviews, latestInterviews] = await Promise.all([
+        await getInterviewsByUserId(user?.id!),
+        await getLatestInterviews({ userId: user?.id! })
     ]);
 
-    const hasPastInterviews = userInterviews?.length! > 0;
-    const hasUpcomingInterviews = latestInterviews?.length! > 0;
+    const hasPastInterviews = userInterviews?.length > 0;
+    const hasUpcomingInterviews = latestInterviews?.length > 0;
     return (
         <>
             <section className="card-cta">
