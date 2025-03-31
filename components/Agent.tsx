@@ -18,7 +18,6 @@ interface SavedMessage {
     content: string;
 }
 
-
 const Agent = ({ userName, userId, type }: AgentProps) => {
     const router = useRouter();
     const [isSpeaking, setIsSpeaking] = useState(false);
@@ -60,12 +59,12 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
     }, [])
 
     useEffect(() => {
-        if (callStatus === CallStatus.FINISHED) router.push('/');
+        if(callStatus === CallStatus.FINISHED) router.push('/');
     }, [messages, callStatus, type, userId]);
 
     const handleCall = async () => {
         setCallStatus(CallStatus.CONNECTING);
-        
+
         await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID!, {
             variableValues: {
                 username: userName,
@@ -115,7 +114,7 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
                     <button className="relative btn-call" onClick={handleCall}>
                         <span className={cn('absolute animate-ping rounded-full opacity-75', callStatus !== 'CONNECTING' && 'hidden')}/>
                         <span>
-                            {isCallInactiveOrFinished ? 'Call' : '. . .'}
+                            {isCallInactiveOrFinished? 'Call' : '. . .'}
                         </span>
                     </button>
                 ) : (
