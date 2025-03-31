@@ -68,6 +68,7 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
         await vapi.start({
             type: "workflow",
             workflowId: process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID!,
+            assistantId: process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID!,
             variables: {
                 username: userName,
                 userid: userId,
