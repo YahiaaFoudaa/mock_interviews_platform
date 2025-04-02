@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { vapi } from '@/lib/vapi.sdk';
+import process from 'process';
 
 enum CallStatus {
     INACTIVE = 'INACTIVE',
@@ -64,19 +65,12 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
 
     const handleCall = async () => {
         setCallStatus(CallStatus.CONNECTING);
-        try {
-            await vapi.start({
-                type: "workflow",
-                workflowId: process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID!,
-                variables: {
-                    username: userName,
-                    userid: userId,
-                }
-            });
-        } catch (error) {
-            console.error('VAPI Error:', error);
-            setCallStatus(CallStatus.INACTIVE);
-        }
+        await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID!, {
+            variableValues: {
+              username: userName,
+              userid: userId,
+            }
+        });
     }
 
     const handleDisconnect = async () => {
