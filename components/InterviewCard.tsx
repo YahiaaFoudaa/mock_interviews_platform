@@ -7,7 +7,7 @@ import DisplayTechIcons from './DisplayTechIcons';
 import { getFeedbackByInterviewId } from '@/lib/actions/general.action';
 
 const InterviewCard = async ({ id, userId, role, type, techstack, createdAt }: InterviewCardProps) => {
-    const feedback = userId && id ? await getFeedbackByInterviewId({ interviewId: id, userId}) : null;
+    const feedback = userId && id ? await getFeedbackByInterviewId({ interviewId: id, userId }) : null;
     const normalizedType = /mix/gi.test(type) ? "Mixed" : type;
     const formattedDate = dayjs(feedback?.createdAt || createdAt || Date.now()).format('MMM D, YYYY');
 
@@ -27,13 +27,20 @@ const InterviewCard = async ({ id, userId, role, type, techstack, createdAt }: I
                             <Image src="/calendar.svg" alt='calendar' width={22} height={22}/>
                             <p>{formattedDate}</p>
                         </div>
-                        <div className='flex flex-row gap-2 items-center'>
-                            <Image src='/star.svg' alt='star' width={22} height={22}/>
-                            <p>{feedback?.totalScore || '---'}/100</p>
-                        </div>
+                        {feedback ? (
+                            <div className='flex flex-row gap-2 items-center'>
+                                <Image src='/star.svg' alt='star' width={22} height={22}/>
+                                <p className='text-success'>{feedback.totalScore}/100</p>
+                            </div>
+                        ) : (
+                            <div className='flex flex-row gap-2 items-center'>
+                                <Image src='/star.svg' alt='star' width={22} height={22}/>
+                                <p className='text-warning'>Not Taken</p>
+                            </div>
+                        )}
                     </div>
                     <p className='line-clamp-2 mt-5'>
-                        {feedback?.finalAssessment || 'You have not taken the interview yet. Take it now to improve your skills.'}
+                        {feedback ? feedback.finalAssessment : 'You haven\'t taken this interview yet. Take it now to improve your skills.'}
                     </p>
                 </div>
 
@@ -44,7 +51,7 @@ const InterviewCard = async ({ id, userId, role, type, techstack, createdAt }: I
                             ? `/interview/${id}/feedback`
                             : `/interview/${id}`
                         }>
-                            {feedback ? 'Check Feedback' : 'View Interview'}
+                            {feedback ? 'Check Feedback' : 'Take Interview'}
                         </Link>
                     </Button>
                 </div>
